@@ -2,73 +2,64 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LOTTO PRIME ULTRA v6 - P200</title>
+<title>LOTTO PRIME OMEGA v7 - P500</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;700&display=swap');
-:root{--neon:#00ff88; --purple:#a855f7; --bg:#030303}
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@900&family=Rajdhani:wght@700&display=swap');
+:root{--neon1:#00f5ff; --neon2:#ff00ff; --neon3:#00ff88; --bg:#000}
 *{margin:0; padding:0; box-sizing:border-box}
-body{background:radial-gradient(circle at 50% 0%,#1a0033 0%,var(--bg) 50%); color:#fff; font-family:'Inter'; min-height:100vh; overflow-x:hidden}
-.neon-text{font-family:'Orbitron'; background:linear-gradient(90deg,var(--neon),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 20px var(--neon)}
-.glass{background:rgba(255,255,255,0.05); backdrop-filter:blur(30px); border:1px solid rgba(255,255,255,0.1); border-radius:20px}
-.header{display:flex; justify-content:space-between; padding:20px; position:sticky; top:0; z-index:100}
-.logo{font-size:24px; font-weight:900}
-.balance-pill{padding:10px 20px; border-radius:30px; background:linear-gradient(90deg,var(--neon),var(--purple)); color:#000; font-weight:900; box-shadow:0 0 30px var(--neon)}
-.sidebar{position:fixed; left:0; top:80px; width:80px; height:calc(100vh - 80px); display:flex; flex-direction:column; gap:15px; padding:20px 10px}
-.nav-icon{width:50px; height:50px; border-radius:15px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:0.3s; font-size:20px}
-.nav-icon:hover{background:var(--neon); color:#000; transform:scale(1.1)}
-.main{margin-left:100px; padding:20px}
-.card{padding:25px; margin:15px 0; transition:0.3s}
-.card:hover{transform:translateY(-5px); box-shadow:0 10px 40px rgba(0,255,136,0.2)}
-.grid-3{display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:15px}
-.btn{padding:14px 24px; border:none; border-radius:12px; background:linear-gradient(90deg,var(--neon),var(--purple)); color:#000; font-weight:900; cursor:pointer; font-size:15px}
-.pillar-tag{font-size:9px; background:rgba(0,255,136,0.2); padding:3px 8px; border-radius:20px; margin:2px; display:inline-block}
-@keyframes glow{0%,100%{box-shadow:0 0 20px var(--neon)}50%{box-shadow:0 0 40px var(--purple)}}
-.glow{animation:glow 2s infinite}
+body{background:#000; color:#fff; font-family:'Rajdhani'; overflow:hidden}
+#canvas3d{position:fixed; top:0; left:0; z-index:0}
+.hud{position:relative; z-index:10; padding:20px}
+.title{font-family:'Exo 2'; font-size:32px; background:linear-gradient(90deg,var(--neon1),var(--neon2),var(--neon3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:rainbow 3s linear infinite}
+@keyframes rainbow{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
+.liquid-glass{background:rgba(255,255,255,0.03); backdrop-filter:blur(40px) saturate(180%); border:1px solid rgba(255,255,255,0.1); border-radius:30px; box-shadow:inset 0 0 20px rgba(255,255,255,0.1)}
+.floating-btn{padding:18px 32px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--neon1),var(--neon2)); color:#000; font-weight:900; font-size:18px; cursor:pointer; box-shadow:0 0 40px var(--neon1); transition:0.3s}
+.floating-btn:hover{transform:scale(1.1) rotate(2deg)}
+.pillar-counter{position:fixed; bottom:20px; right:20px; font-size:14px; padding:10px 20px}
+.grid-p500{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px; margin-top:20px}
+.card-p{padding:20px; transition:0.4s}
+.card-p:hover{transform:perspective(1000px) rotateX(5deg) translateZ(20px)}
 </style>
 </head>
 <body>
+<canvas id="canvas3d"></canvas>
 
-<div class="header glass">
-<div class="logo neon-text">LOTTO PRIME ULTRA</div>
-<div class="balance-pill">R<span id="bal">1000</span> | LVL 42</div>
+<div class="hud">
+<h1 class="title">LOTTO PRIME OMEGA</h1>
+<p>P500/500 ACTIVE | QUANTUM SYNC: 99.9%</p>
+
+<div class="grid-p500">
+<div class="card-p liquid-glass"><b>P500</b><h3>THE PILLAR</h3><button class="floating-btn" onclick="alert('Demo: You are now CEO of Reality')">ASCEND</button></div>
+<div class="card-p liquid-glass"><b>P251</b><h3>Neuralink Pick</h3><button class="floating-btn">🧠 THINK NUMBERS</button></div>
+<div class="card-p liquid-glass"><b>P101</b><h3>3D Hologram Draw</h3><button class="floating-btn">PROJECT BALLS</button></div>
+<div class="card-p liquid-glass"><b>P111</b><h3>AI God "Lucky"</h3><button class="floating-btn">VOICE CHAT</button></div>
+<div class="card-p liquid-glass"><b>P400</b><h3>Become The House</h3><button class="floating-btn">OWN THE BANK</button></div>
+<div class="card-p liquid-glass"><b>P181</b><h3>Wellness AI</h3><button class="floating-btn">MEDITATE</button></div>
 </div>
 
-<div class="sidebar glass">
-<div class="nav-icon" onclick="show(0)">🏠</div>
-<div class="nav-icon" onclick="show(1)">🎰</div>
-<div class="nav-icon" onclick="show(2)">🤖</div>
-<div class="nav-icon" onclick="show(3)">🌐</div>
-<div class="nav-icon" onclick="show(4)">💎</div>
+<div class="pillar-counter liquid-glass">DEMO MODE | ALL DATA LOCAL</div>
 </div>
-
-<div class="main" id="main"></div>
 
 <script>
-let state = {bal:1000, lvl:42, pillars:200};
-function show(p){
-let html='';
-if(p==0) html=`<h1 class="neon-text">COMMAND CENTER</h1>
-<div class="grid-3">
-<div class="card glass"><span class="pillar-tag">P101</span><h3>3D Draw Studio</h3><button class="btn">Launch WebGL</button></div>
-<div class="card glass"><span class="pillar-tag">P111</span><h3>AI Agent "Lucky"</h3><button class="btn">Talk to AI</button></div>
-<div class="card glass"><span class="pillar-tag">P200</span><h3>Billionaire Button</h3><button class="btn glow" onclick="alert('Demo: You are now a billionaire!')">PRESS</button></div>
-</div>`;
-
-if(p==1) html=`<h1 class="neon-text">PLAY ARENA</h1>
-<div class="card glass"><span class="pillar-tag">P103</span><span class="pillar-tag">P15</span><h3>NFT Wheeling</h3><p>Your ticket will be minted as NFT</p><button class="btn">Mint Ticket</button></div>`;
-
-if(p==2) html=`<div class="card glass"><span class="pillar-tag">P112</span><h3>Voice Control</h3><button class="btn">🎤 "Buy 10 tickets"</button></div>
-<div class="card glass"><span class="pillar-tag">P113</span><h3>AI Win Video</h3><button class="btn">Generate My Win</button></div>`;
-
-if(p==3) html=`<div class="card glass"><span class="pillar-tag">P121</span><h3>50+ Global Lotteries</h3><p>Powerball, EuroMillions, SA Lotto</p></div>
-<div class="card glass"><span class="pillar-tag">P129</span><h3>Charity Mode</h3><p>1% of all demo plays go to charity</p></div>`;
-
-if(p==4) html=`<div class="card glass"><span class="pillar-tag">P141</span><h3>Lotto Savings</h3><p>Auto-save 10% of fake winnings</p></div>
-<div class="card glass"><span class="pillar-tag">P181</span><h3>Responsible Gaming</h3><button class="btn">Set R500 Limit</button></div>`;
-
-document.getElementById('main').innerHTML=html;
+// FAKE 3D BACKGROUND - Particle field
+const canvas = document.getElementById('canvas3d');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+let particles = Array(200).fill().map(()=>({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2}));
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach(p=>{
+p.y -= 0.5; if(p.y<0)p.y=canvas.height;
+ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); 
+ctx.fillStyle = 'rgba(0,245,255,0.5)'; ctx.fill();
+});
+requestAnimationFrame(animate);
 }
-show(0);
+animate();
+
+// STATE
+let state = {pillars:500, ui:12, reality:1};
+localStorage.setItem('omega', JSON.stringify(state));
 </script>
 </body>
 </html>
