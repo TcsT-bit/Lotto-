@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOTTO PRIME v5 - 100 PILLARS</title>
+<style>
+:root{--green:#00ff88; --purple:#8b5cf6; --bg:#050505; --glass:rgba(26,26,26,0.6)}
+*{box-sizing:border-box; font-family:'Inter', system-ui}
+body{background:radial-gradient(circle at 20% 50%,#1a1a2e 0%,var(--bg) 50%); color:#fff; margin:0; padding:0; min-height:100vh}
+.glass{background:var(--glass); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:16px}
+.header{display:flex; justify-content:space-between; align-items:center; padding:15px; position:sticky; top:0; z-index:10}
+.logo{font-size:20px; font-weight:900; background:linear-gradient(90deg,var(--green),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+.balance{padding:8px 16px; border-radius:20px; background:linear-gradient(90deg,var(--green),#00cc66); color:#000; font-weight:900}
+.nav{display:flex; gap:8px; padding:10px; overflow-x:auto}
+.nav-btn{padding:10px 16px; border-radius:12px; background:#1a1a1a; cursor:pointer; white-space:nowrap; transition:0.3s}
+.nav-btn.active{background:linear-gradient(90deg,var(--green),var(--purple)); color:#000}
+.container{padding:15px; max-width:700px; margin:auto}
+.card{padding:20px; margin:12px 0}
+.btn{width:100%; padding:14px; border:none; border-radius:12px; background:linear-gradient(90deg,var(--green),var(--purple)); color:#000; font-weight:900; font-size:16px; cursor:pointer}
+.num-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(45px,1fr)); gap:8px}
+.num{aspect-ratio:1; border-radius:50%; background:#222; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:0.2s; font-weight:700}
+.num:hover{transform:scale(1.1)}.num.active{background:var(--green); color:#000; box-shadow:0 0 15px var(--green)}
+.badge{font-size:10px; padding:3px 8px; border-radius:20px; background:#333; margin:2px}
+.progress{height:8px; background:#222; border-radius:10px; overflow:hidden}
+.progress-bar{height:100%; background:var(--green); width:60%}
+.floating{animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+</style>
+</head>
+<body>
+
+<div class="header glass">
+<div class="logo">LOTTO PRIME</div>
+<div><span class="badge">LVL 12</span><span class="balance">R<span id="bal">1000</span></span></div>
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="container" id="app"></div>
+
+<script>
+const TABS = ['Home','Play','AI','Stats','Wallet','Social','Gamify','Admin','Export'];
+let state = JSON.parse(localStorage.getItem('lp')) || {bal:1000, lvl:12, xp:450, tickets:[], history:[], badges:['First Login']};
+let selected=[]; let secret=Math.random().toString();
+
+// BUILD NAV
+TABS.forEach((t,i)=>{ let b=document.createElement('div'); b.className='nav-btn'+(i==0?' active':''); b.innerText=t;
+b.onclick=()=>{document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(i)};
+document.getElementById('nav').appendChild(b)});
+
+function save(){localStorage.setItem('lp',JSON.stringify(state)); document.getElementById('bal').innerText=state.bal}
+
+// RENDER ENGINE FOR 100 PILLARS
+function render(tab){
+let html='';
+if(tab==0) html=`<div class="card glass floating"><h2>Welcome Back CEO</h2>
+<div class="progress"><div class="progress-bar" style="width:${state.xp/10}%"></div></div>
+<p>P81 XP: ${state.xp}/1000 | P82 Streak: 5 Days</p></div>
+<div class="card glass"><h3>P51 Leaderboard</h3><p>1. You - R${state.bal}</p></div>`;
+
+if(tab==1) html=`<div class="card glass"><h3>P11-P20 Play</h3><label><input type="checkbox" id="wheel"> P15 Wheeling</label>
+<div class="num-grid" id="nums"></div><button class="btn" onclick="buy()">P31 Buy R10</button></div>
+<div class="card glass"><h3>P1-P10 Triple Draw</h3><div class="badge">Hash: ${secret.slice(0,8)}...</div>
+<button class="btn" onclick="draw()">RUN DRAW</button><h2 id="res">-</h2></div>`;
+
+if(tab==2) html=`<div class="card glass"><h3>P71-P80 AI Suite</h3>
+<div class="badge">P71 AI Coach</div><p>"Avoid 1,2,3 sequence. 87% of jackpots have 2 high 4 low"</p>
+<div class="badge">P78 Win Prob</div><p>Your odds: 1 in 13,983,816</p>
+<div class="badge">P79 Budget</div><p>Spent R40 this week. Limit: R200</p></div>`;
+
+if(tab==3) html=`<div class="card glass"><h3>P21-P30 Stats</h3><p>P21 Hot: 7,14,23</p><p>P24 Avg Sum: 147</p></div>`;
+
+if(tab==4) html=`<div class="card glass"><h3>P31-P40 Wallet</h3>
+<button class="btn">P32 Paystack Test Deposit</button>
+<button class="btn">P33 Connect USDT</button><p>P35 KYC: <span class="badge">Verified Demo</span></p></div>`;
+
+if(tab==5) html=`<div class="card glass"><h3>P51-P60 Social</h3><p>P52 Winner: Sarah won R50k</p><button class="btn">P57 Share to WhatsApp</button></div>`;
+
+if(tab==6) html=`<div class="card glass"><h3>P81-P90 Gamification</h3>
+<p>P83 Badges: ${state.badges.join(', ')}</p><button class="btn">P84 Spin Wheel</button><button class="btn">P85 Scratch Card</button></div>`;
+
+if(tab==7) html=`<div class="card glass"><h3>P91-P100 Enterprise</h3>
+<p>P91 Multi-Currency: ZAR | USD | USDT</p><p>P93 API Key: demo_xxx</p><p>P95 Analytics: 1.2M Users</p></div>`;
+
+if(tab==8) html=`<div class="card glass"><h3>P30 Export</h3><textarea style="width:100%;height:200px;background:#111;color:#fff">${JSON.stringify(state)}</textarea></div>`;
+
+document.getElementById('app').innerHTML=html;
+buildNums();
+}
+
+function buildNums(){
+  let g=document.getElementById('nums'); if(!g)return; g.innerHTML='';
+  for(let i=1;i<=49;i++){let d=document.createElement('div'); d.className='num'; d.innerText=i;
+  d.onclick=()=>{let max=document.getElementById('wheel')?.checked?10:6;
+  if(selected.includes(i)){selected=selected.filter(n=>n!=i);d.classList.remove('active');}
+  else if(selected.length<max){selected.push(i);d.classList.add('active');}}; g.appendChild(d)}
+}
+
+function wheel(a){let r=[]; function c(s,comb){if(comb.length==6){r.push([...comb]);return} for(let i=s;i<a.length;i++){comb.push(a[i]);c(i+1,comb);comb.pop()}} c(0,[]); return r}
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function rand6(){let a=[]; while(a.length<6){let n=Math.floor(Math.random()*49)+1; if(!a.includes(n))a.push(n)} return a.sort((a,b)=>a-b)}
+
+async function buy(){
+  let max=document.getElementById('wheel')?.checked?10:6; if(selected.length<max)return alert(`Pick ${max}`);
+  let combos=document.getElementById('wheel')?.checked?wheel(selected):[selected]; let cost=combos.length*10;
+  if(state.bal<cost)return alert('No credits'); state.bal-=cost; combos.forEach(c=>state.tickets.push({nums:c}));
+  state.xp+=10; save(); alert(`${combos.length} tickets`); selected=[]; buildNums();
+}
+
+async function draw(){
+  document.getElementById('res').innerText='DRAWING...';
+  let p=rand6(),d=rand6(),b=Math.random().toString(16).slice(2,10);
+  let finalSeed=await sha(p.join('')+d.join('')+secret+b);
+  let final=[]; for(let i=0;i<6;i++)final.push((parseInt(finalSeed.substr(i*2,2),16)%49)+1);
+  final=[...new Set(final)].slice(0,6).sort((a,b)=>a-b);
+  state.history.push(final); state.tickets.forEach(t=>{let m=t.nums.filter(n=>final.includes(n)).length; state.bal+= [0,0,0,10,100,1000,10000][m]});
+  document.getElementById('res').innerText=final.join(' - '); state.xp+=5; save();
+}
+
+render(0);
+</script>
+</body>
+</html>
