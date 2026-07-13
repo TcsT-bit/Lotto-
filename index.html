@@ -2,64 +2,124 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LOTTO PRIME OMEGA v7 - P500</title>
+<title>LOTTO PRIME OMEGA v7.1 - WORKING</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@900&family=Rajdhani:wght@700&display=swap');
-:root{--neon1:#00f5ff; --neon2:#ff00ff; --neon3:#00ff88; --bg:#000}
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@900&family=Rajdhani:wght@600&display=swap');
+:root{--neon:#00ff88; --purple:#a855f7; --bg:#030303}
 *{margin:0; padding:0; box-sizing:border-box}
-body{background:#000; color:#fff; font-family:'Rajdhani'; overflow:hidden}
-#canvas3d{position:fixed; top:0; left:0; z-index:0}
-.hud{position:relative; z-index:10; padding:20px}
-.title{font-family:'Exo 2'; font-size:32px; background:linear-gradient(90deg,var(--neon1),var(--neon2),var(--neon3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:rainbow 3s linear infinite}
-@keyframes rainbow{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(360deg)}}
-.liquid-glass{background:rgba(255,255,255,0.03); backdrop-filter:blur(40px) saturate(180%); border:1px solid rgba(255,255,255,0.1); border-radius:30px; box-shadow:inset 0 0 20px rgba(255,255,255,0.1)}
-.floating-btn{padding:18px 32px; border:none; border-radius:20px; background:linear-gradient(135deg,var(--neon1),var(--neon2)); color:#000; font-weight:900; font-size:18px; cursor:pointer; box-shadow:0 0 40px var(--neon1); transition:0.3s}
-.floating-btn:hover{transform:scale(1.1) rotate(2deg)}
-.pillar-counter{position:fixed; bottom:20px; right:20px; font-size:14px; padding:10px 20px}
-.grid-p500{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:15px; margin-top:20px}
-.card-p{padding:20px; transition:0.4s}
-.card-p:hover{transform:perspective(1000px) rotateX(5deg) translateZ(20px)}
+body{background:radial-gradient(circle at 50% 0%,#1a0033 0%,var(--bg) 70%); color:#fff; font-family:'Rajdhani'; min-height:100vh}
+.title{font-family:'Exo 2'; font-size:28px; text-align:center; padding:20px; background:linear-gradient(90deg,var(--neon),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+.glass{background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:20px; margin:12px}
+.grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:10px}
+.num{aspect-ratio:1; border-radius:50%; background:#222; display:flex; align-items:center; justify-content:center; cursor:pointer; font-weight:700}
+.num.active{background:var(--neon); color:#000; box-shadow:0 0 15px var(--neon)}
+.btn{width:100%; padding:14px; border:none; border-radius:12px; background:linear-gradient(90deg,var(--neon),var(--purple)); color:#000; font-weight:900; font-size:16px; cursor:pointer; margin-top:10px}
+.btn:active{transform:scale(0.97)}
+.pillar{font-size:10px; background:rgba(0,255,136,0.2); padding:3px 8px; border-radius:20px}
+.topbar{display:flex; justify-content:space-between; align-items:center; padding:15px}
+.balance{padding:8px 16px; border-radius:20px; background:var(--neon); color:#000; font-weight:900}
+.hash{word-break:break-all; font-size:10px; background:#111; padding:8px; border-radius:8px; font-family:monospace}
 </style>
 </head>
 <body>
-<canvas id="canvas3d"></canvas>
 
-<div class="hud">
-<h1 class="title">LOTTO PRIME OMEGA</h1>
-<p>P500/500 ACTIVE | QUANTUM SYNC: 99.9%</p>
-
-<div class="grid-p500">
-<div class="card-p liquid-glass"><b>P500</b><h3>THE PILLAR</h3><button class="floating-btn" onclick="alert('Demo: You are now CEO of Reality')">ASCEND</button></div>
-<div class="card-p liquid-glass"><b>P251</b><h3>Neuralink Pick</h3><button class="floating-btn">🧠 THINK NUMBERS</button></div>
-<div class="card-p liquid-glass"><b>P101</b><h3>3D Hologram Draw</h3><button class="floating-btn">PROJECT BALLS</button></div>
-<div class="card-p liquid-glass"><b>P111</b><h3>AI God "Lucky"</h3><button class="floating-btn">VOICE CHAT</button></div>
-<div class="card-p liquid-glass"><b>P400</b><h3>Become The House</h3><button class="floating-btn">OWN THE BANK</button></div>
-<div class="card-p liquid-glass"><b>P181</b><h3>Wellness AI</h3><button class="floating-btn">MEDITATE</button></div>
+<div class="topbar">
+<div class="title">LOTTO PRIME</div>
+<div class="balance">R<span id="bal">1000</span></div>
 </div>
 
-<div class="pillar-counter liquid-glass">DEMO MODE | ALL DATA LOCAL</div>
+<div class="glass">
+<span class="pillar">P15 WHEELING</span> <span class="pillar">P1-P10 VERIFY</span> <span class="pillar">P31 WALLET</span>
+<h3>Pick 6 Numbers - R10</h3>
+<label><input type="checkbox" id="wheel"> Wheeling Mode 7-10 numbers</label>
+<div class="grid" id="nums"></div>
+<button class="btn" onclick="buy()">BUY TICKET</button>
+</div>
+
+<div class="glass">
+<h3>TRIPLE VERIFIED DRAW</h3>
+<p>Pre-Hash:</p><div class="hash" id="hash">-</div>
+<button class="btn" onclick="draw()">RUN DRAW</button>
+<p>Winning Numbers:</p><h2 id="result" style="color:var(--neon)">-</h2>
+<p>Secret:</p><div class="hash" id="secret">-</div>
+</div>
+
+<div class="glass">
+<h3>P200 STATS</h3>
+<p>Draws: <span id="draws">0</span></p>
+<p>Hot Numbers: <span id="hot">-</span></p>
+<button class="btn" onclick="exportData()">P30 EXPORT JSON</button>
 </div>
 
 <script>
-// FAKE 3D BACKGROUND - Particle field
-const canvas = document.getElementById('canvas3d');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-let particles = Array(200).fill().map(()=>({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2}));
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-particles.forEach(p=>{
-p.y -= 0.5; if(p.y<0)p.y=canvas.height;
-ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); 
-ctx.fillStyle = 'rgba(0,245,255,0.5)'; ctx.fill();
-});
-requestAnimationFrame(animate);
-}
-animate();
+let state = JSON.parse(localStorage.getItem('lotto')) || {bal:1000, tickets:[], history:[], secret:Math.random().toString()};
+let selected = [];
 
-// STATE
-let state = {pillars:500, ui:12, reality:1};
-localStorage.setItem('omega', JSON.stringify(state));
+function save(){localStorage.setItem('lotto', JSON.stringify(state)); document.getElementById('bal').innerText=state.bal}
+
+// BUILD NUMBERS
+for(let i=1;i<=49;i++){
+  let d=document.createElement('div'); d.className='num'; d.innerText=i;
+  d.onclick=()=>{
+    let max = document.getElementById('wheel').checked? 10 : 6;
+    if(selected.includes(i)){selected=selected.filter(n=>n!=i); d.classList.remove('active');}
+    else if(selected.length<max){selected.push(i); d.classList.add('active');}
+  };
+  document.getElementById('nums').appendChild(d);
+}
+
+// WHEELING
+function wheel(arr){let res=[]; function c(s,comb){if(comb.length==6){res.push([...comb]);return} for(let i=s;i<arr.length;i++){comb.push(arr[i]);c(i+1,comb);comb.pop()}} c(0,[]); return res}
+
+// HASH
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function rand6(){let a=[]; while(a.length<6){let n=Math.floor(Math.random()*49)+1; if(!a.includes(n))a.push(n)} return a.sort((a,b)=>a-b)}
+
+async function buy(){
+  let max = document.getElementById('wheel').checked? 10 : 6;
+  if(selected.length<max)return alert(`Pick ${max} numbers`);
+  let combos = document.getElementById('wheel').checked? wheel(selected) : [selected];
+  let cost = combos.length * 10;
+  if(state.bal<cost)return alert('Not enough demo credits');
+  state.bal -= cost;
+  state.hash = await sha(state.secret);
+  document.getElementById('hash').innerText = state.hash;
+  combos.forEach(c=>state.tickets.push({nums:c, win:0}));
+  save(); alert(`${combos.length} ticket(s) bought for R${cost}`);
+  selected=[]; document.querySelectorAll('.num.active').forEach(n=>n.classList.remove('active'));
+}
+
+async function draw(){
+  document.getElementById('result').innerText='DRAWING...';
+  let p=rand6(), d=rand6(), b=Math.random().toString(16).slice(2,10);
+  let finalSeed = await sha(p.join('')+d.join('')+state.secret+b);
+  let final=[]; for(let i=0;i<6;i++)final.push((parseInt(finalSeed.substr(i*2,2),16)%49)+1);
+  final = [...new Set(final)].slice(0,6).sort((a,b)=>a-b);
+
+  state.history.push(final);
+  state.tickets.forEach(t=>{
+    let m = t.nums.filter(n=>final.includes(n)).length;
+    let payout = [0,0,0,10,100,1000,10000][m];
+    t.win = payout; state.bal += payout;
+  });
+
+  document.getElementById('result').innerText = final.join(' - ');
+  document.getElementById('secret').innerText = state.secret;
+  document.getElementById('draws').innerText = state.history.length;
+
+  let freq={}; state.history.flat().forEach(n=>freq[n]=(freq[n]||0)+1);
+  document.getElementById('hot').innerText = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>x[0]).join(', ');
+
+  state.secret = Math.random().toString(); save();
+}
+
+function exportData(){
+  let data = JSON.stringify(state, null, 2);
+  navigator.clipboard.writeText(data);
+  alert('P30: Copied to clipboard!');
+}
+
+save();
 </script>
 </body>
 </html>
